@@ -1,0 +1,32 @@
+### Imports ####################################################################
+
+importFrom("qrng",
+           "sobol")
+importFrom("keras",
+           "layer_input", "layer_dense", "layer_batch_normalization",
+           "layer_dropout", "k_shape", "%>%", "layer_concatenate",
+           "layer_lambda", "k_random_normal", "keras_model", "multi_gpu_model",
+           "compile", "k_mean", "k_square", "k_exp",
+           "loss_mean_squared_error", "loss_binary_crossentropy",
+           "save_model_weights_hdf5", "load_model_weights_hdf5",
+           "fit", "serialize_model", "unserialize_model")
+importFrom("tensorflow",
+           "tf")
+importFrom("utils",
+           "data", "packageName")
+importFrom("methods",
+           "hasArg")
+importFrom("stats",
+           "rnorm")
+importFrom("tools",
+           "file_path_sans_ext")
+
+
+### Exports ####################################################################
+
+export("GMMN_model")
+export("VAE_model")
+export("loss")
+export("train", "train_once")
+export("exists_rda", "read_rda", "save_rda", "rename_rda")
+export("rm_ext", "to_savable", "to_callable")
