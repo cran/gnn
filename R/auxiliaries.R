@@ -26,80 +26,26 @@ rm_ext <- function(x)
     }, USE.NAMES = FALSE)
 
 
-### Converting Keras model weights to R objects and vice versa #################
+### system.time() with human-readable output ###################################
 
-##' @title Convert Keras Model Weights to Model Weights
-##' @param model Keras model
-##' @return R object containing the weights of the model 'model'
-##' @author Marius Hofert and Avinash Prasad
-##' @note Similar to keras::serialize_model() which serializes Keras models
-##'       (rather than model weights) to R objects.
-serialize_weights <- function(model)
-{
-    stopifnot(inherits(model, "keras.engine.training.Model"))
-    tmp <- tempfile(pattern = "file", fileext = ".h5") # create temporary hdf5 file to which we write the Keras model weights
-    on.exit(unlink(tmp), add = TRUE)
-    save_model_weights_hdf5(model, filepath = tmp) # saves model weights to temporary hdf5 file
-    readBin(tmp, what = "raw", n = file.size(tmp)) # read from temporary hdf5 file to R object
-}
-
-##' @title Convert Model Weights to Keras Model Weights
-##' @param model Keras model
-##' @param model.weights R object containing the model weights
-##' @return Keras model with 'model.weights' loaded into 'model'
-##' @author Marius Hofert and Avinash Prasad
-##' @note In the same vein as the keras function unserialize_model() which
-##'       loads R objects into keras models.
-unserialize_weights <- function(model, model.weights)
-{
-    stopifnot(inherits(model, "keras.engine.training.Model"))
-    tmp <- tempfile(pattern = "file", fileext = ".h5") # create temporary hdf5 file to which we write the weights 'model.weights' (R object)
-    on.exit(unlink(tmp), add = TRUE)
-    writeBin(model.weights, tmp) # writes model weights to temporary hdf5 file
-    load_model_weights_hdf5(model, filepath = tmp) # load the model weights into 'model' and return the model
-}
-
-
-### Converting GNNs for saving and loading #####################################
-
-##' @title Convert a Callable GNN to a Savable GNN
-##' @param gnn GNN object
-##' @return the savable (serialized) GNN
+##' @title system.time() with Human-Readable Output
+##' @param ... arguments passed to the underlying system.time()
+##' @param digits see ?round
+##' @return timings in human-readable format
 ##' @author Marius Hofert
-to_savable <- function(gnn)
-{
-    switch(gnn[["type"]],
-           "GMMN" = {
-               gnn[["model"]] <- serialize_model(gnn[["model"]]) # serialize component 'model'
-           },
-           "VAE" = {
-               gnn[["model"]]     <- serialize_weights(gnn[["model"]])
-               gnn[["encoder"]]   <- serialize_weights(gnn[["encoder"]])
-               gnn[["generator"]] <- serialize_weights(gnn[["generator"]])
-           },
-           stop("Wrong 'type'"))
-    gnn
-}
-
-##' @title Convert a Savable GNN to a Callable GNN
-##' @param gnn GNN object
-##' @return the callable (unserialized) GNN
-##' @author Marius Hofert
-to_callable <- function(gnn)
-{
-    switch(gnn[["type"]],
-           "GMMN" = {
-               gnn[["model"]] <- unserialize_model(gnn[["model"]], # unserialize component 'model'
-                                                   custom_objects = c(loss = loss))
-           },
-           "VAE" = {
-               gnn[["model"]]     <- unserialize_weights(gnn[["model"]],
-                                                         model.weights = gnn[["model"]])
-               gnn[["encoder"]]   <- unserialize_weights(gnn[["encoder"]],
-                                                         model.weights = gnn[["encoder"]])
-               gnn[["generator"]] <- unserialize_weights(gnn[["generator"]],
-                                                         model.weights = gnn[["generator"]])
-           },
-           stop("Wrong 'type'"))
-    gnn
+human_time <- function(..., digits = 2) {
+    toHuman <- function(t) {
+        if(!is.numeric(t)) return(character(0))
+        if(t < 60) {
+            paste0(round(t, digits = digits),"s")
+        } else if(t < 3600) {
+            paste0(round(t/60, digits = digits),"min")
+        } else {
+            paste0(round(t/3600, digits = digits),"h")
+        }
+    }
+    tm <- system.time(...) # note: has NA for Windows, see ?proc.time
+    res <- sapply(tm[1:3], toHuman)
+    names(res) <- c("user", "system", "elapsed")
+    noquote(res)
 }

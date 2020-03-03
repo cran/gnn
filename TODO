@@ -1,5 +1,15 @@
+## Short-term
+- Record run times of each function call in demo GMMN_MTS_paper.R
+- Run this demo again on Graham
+
+## Long-term
+- Fix: Paper citations (2019 on arXiv or the real publication if published)
 - KL(): If an analytical (differentiable) form exits for K-L divergence
         between copulas, we could propose an interesting extension.
         (Simpler) extensions to consider first: encoder maps to non-diagonal
         covariance matrix, Kendall matrix (which we then transform to covariance
         matrix for use in KL()).
+- Need:
+  1) Functions to extract parameters of trained GNNs and convert them to a NN in pure R
+     code (so that one can call them in parallel)
+  2) Perhaps even implement fitting/training in R (even if inefficient)
