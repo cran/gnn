@@ -1,7 +1,14 @@
+### Special functions ##########################################################
+
+## ## If package contains compiled code
+## useDynLib(gnn, .registration = TRUE)
+
+
 ### Imports ####################################################################
 
-importFrom("qrng",
-           "sobol")
+importFrom("tensorflow",
+           "tf")
+
 importFrom("keras",
            "layer_input", "layer_dense", "layer_batch_normalization",
            "layer_dropout", "k_shape", "%>%", "layer_concatenate",
@@ -9,26 +16,74 @@ importFrom("keras",
            "compile", "k_mean", "k_square", "k_exp",
            "loss_mean_squared_error", "loss_binary_crossentropy",
            "save_model_weights_hdf5", "load_model_weights_hdf5",
-           "fit", "serialize_model", "unserialize_model")
-importFrom("tensorflow",
-           "tf")
-importFrom("utils",
-           "data", "packageName")
+           "fit", "serialize_model", "unserialize_model",
+           "count_params",
+           "KerasCallback")
+
+importFrom("R6",
+           "R6Class")
+
 importFrom("methods",
-           "hasArg")
+           "hasArg", "is")
+
 importFrom("stats",
-           "rnorm", "plogis", "qlogis", "prcomp")
+           "predict", "rnorm", "qnorm", "plogis", "qlogis", "prcomp",
+           "time") # generic time()
+
+importFrom("utils",
+           "data", "packageName", "str", "tail")
+
 importFrom("tools",
            "file_path_sans_ext")
+
+importFrom("graphics",
+           "pairs", "mtext")
+
+importFrom("qrng",
+           "sobol")
+
+importFrom("copula",
+           "rCopula", "cCopula", "indepCopula", "pobs", "nParam")
 
 
 ### Exports ####################################################################
 
-export("GMMN_model")
-export("VAE_model")
-export("loss")
-export("train", "train_once")
+## Functions
+export("loss", "MMD", "CvM")
 export("range_trafo", "logis_trafo", "PCA_trafo")
-export("exists_rda", "read_rda", "save_rda", "rename_rda")
-export("rm_ext", "to_savable", "to_callable")
-export("human_time")
+export("saveGNN", "loadGNN")
+export("catch", "TensorFlow_available", # use via if(!TensorFlow_available()) q()
+       "rm_ext")
+export("rPrior")
+export("as.human", "human.time")
+
+## Constructors
+export("FNN") # constructor of object of S3 class c("gnn_FNN", "gnn_GNN", "gnn_Model")
+## export("gof2sample") # constructor of an object of S3 class c("htest", "htest2") => not working yet
+
+## Generics
+export("is.GNN")
+export("ffGNN")
+export("fitGNN", "fitGNNonce", "is.trained")
+export("rGNN")
+export("as.keras")
+
+## Basic methods
+S3method("print",      "gnn_GNN")
+S3method("str",        "gnn_GNN")
+S3method("summary",    "gnn_GNN")
+S3method("dim",        "gnn_GNN")
+S3method("is.GNN",     "gnn_GNN")
+S3method("is.GNN",     "list")
+S3method("ffGNN",      "gnn_GNN")
+S3method("fitGNN",     "gnn_GNN")
+S3method("is.trained", "gnn_GNN")
+S3method("fitGNNonce", "gnn_GNN")
+S3method("is.trained", "list")
+S3method("rGNN",       "gnn_GNN")
+S3method("as.raw",     "gnn_GNN")
+S3method("as.keras",   "gnn_GNN")
+S3method("time",       "gnn_GNN")
+S3method("print",      "gnn_proc_time")
+S3method("plot",       "gnn_GNN")
+S3method("print",      "htest2")

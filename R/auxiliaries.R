@@ -1,3 +1,45 @@
+### Catching warnings and errors ###############################################
+
+##' @title Catching Results, Warnings and Errors Simultaneously
+##' @param expr assignment or function evaluation
+##' @return list with components:
+##'         'value'  : value of expr or simpleError
+##'	    'warning': simpleWarning or NULL
+##'         'error'  : simpleError or NULL
+##' @author Marius Hofert (see simsalapar)
+##' @note https://stat.ethz.ch/pipermail/r-help/2010-December/262626.html
+catch <- function(expr)
+{
+    W <- NULL
+    w.handler <- function(w) { # warning handler
+	W <<- w
+	invokeRestart("muffleWarning")
+    }
+    res <- list(value = withCallingHandlers(tryCatch(expr, error = function(e) e),
+                                            warning = w.handler), warning = W)
+    is.err <- is(val <- res$value, "simpleError") # logical indicating an error
+    list(value   = if(is.err) NULL else val, # value (or NULL in case of error)
+	 warning = res$warning, # warning (or NULL)
+	 error   = if(is.err) val else NULL) # error (or NULL if okay)
+}
+
+
+### Simple and (re)strict(ive) test of whether TensorFlow is available #########
+
+##' @title Test whether TensorFlow is Available
+##' @return boolean indicating whether TensorFlow is found
+##' @author Marius Hofert
+##' @note See https://stackoverflow.com/questions/38549253/how-to-find-which-version-of-tensorflow-is-installed-in-my-system
+TensorFlow_available <- function() {
+    if(Sys.info()[["sysname"]] == "Windows") {
+        warning("'TensorFlow_available()' does not work on Windows. Will return FALSE.")
+        return(FALSE)
+    }
+    TFfound <- catch(system("pip list | grep tensorflow", ignore.stdout = TRUE))
+    is.null(TFfound$error) && is.null(TFfound$warning) && (TFfound$value == 0)
+}
+
+
 ### Remove extension of a file path ############################################
 
 ##' @title Fixed Version of tools::file_path_sans_ext()
@@ -24,28 +66,3 @@ rm_ext <- function(x)
             sub("\\.(?:[^0-9.][^.]*)?$", "", x.) # see https://stackoverflow.com/questions/57182339/how-to-strip-off-a-file-ending-but-only-when-it-starts-with-a-non-digit-a-rege
         } else file_path_sans_ext(x.)
     }, USE.NAMES = FALSE)
-
-
-### system.time() with human-readable output ###################################
-
-##' @title system.time() with Human-Readable Output
-##' @param ... arguments passed to the underlying system.time()
-##' @param digits see ?round
-##' @return timings in human-readable format
-##' @author Marius Hofert
-human_time <- function(..., digits = 2) {
-    toHuman <- function(t) {
-        if(!is.numeric(t)) return(character(0))
-        if(t < 60) {
-            paste0(round(t, digits = digits),"s")
-        } else if(t < 3600) {
-            paste0(round(t/60, digits = digits),"min")
-        } else {
-            paste0(round(t/3600, digits = digits),"h")
-        }
-    }
-    tm <- system.time(...) # note: has NA for Windows, see ?proc.time
-    res <- sapply(tm[1:3], toHuman)
-    names(res) <- c("user", "system", "elapsed")
-    noquote(res)
-}

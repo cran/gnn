@@ -1,11 +1,9 @@
 Package: gnn
-Version: 0.0-2
+Version: 0.0-3
 Title: Generative Neural Networks
 Description: Tools to set up, train, store, load, investigate and analyze
              generative neural networks. In particular, functionality for
 	     generative moment matching networks is provided.
-	     See Hofert, Prasad, Zhu (2018) <arXiv:1811.00683>
-	     for more details.
 Authors@R: c(person(given = "Marius", family = "Hofert", role = c("aut", "cre"),
                     email = "marius.hofert@uwaterloo.ca",
 		    comment = c(ORCID = "0000-0001-8009-4665")),
@@ -13,15 +11,18 @@ Authors@R: c(person(given = "Marius", family = "Hofert", role = c("aut", "cre"),
                     email = "a2prasad@uwaterloo.ca"))
 Maintainer: Marius Hofert <marius.hofert@uwaterloo.ca>
 Depends: R (>= 3.5.0)
-Imports: keras, tensorflow, qrng, methods, tools
-Suggests: copula, qrmtools, qrmdata, latticeExtra, RnavGraphImageData
+Imports: keras, tensorflow, methods, R6, qrng, tools, copula
+Suggests: nvmix, qrmdata
 Enhances:
 License: GPL (>= 3)
 SystemRequirements: TensorFlow (https://www.tensorflow.org/)
 NeedsCompilation: no
 Repository: CRAN
 Encoding: UTF-8
-Date/Publication: 2020-03-03 23:40:02 UTC
-Packaged: 2020-03-03 17:00:16 UTC; mhofert
+Date/Publication: 2021-09-20 14:00:10 UTC
 Author: Marius Hofert [aut, cre] (<https://orcid.org/0000-0001-8009-4665>),
   Avinash Prasad [aut]
+Repository/R-Forge/Project: gnn
+Repository/R-Forge/Revision: 317
+Repository/R-Forge/DateTimeStamp: 2021-09-19 14:41:49
+Packaged: 2021-09-19 14:48:12 UTC; rforge
