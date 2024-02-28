@@ -98,8 +98,8 @@ fitGNN.gnn_GNN <- function(x, data, batch.size = nrow(data), n.epoch = 100, prio
               verbose %% 1 == 0, 0 <= verbose, verbose <= 3)
     dim.out <- tail(dim(x), n = 1) # output dimension
     ## Note: for VAEs, dim.out = dim(x)[1] as input and output layer have the same dim
-    if(dim.train[2] != dim.out)
-        stop("The dimension of the training data does not match the dimension of the output layer of the GNN")
+ ##   if(dim.train[2] != dim.out)
+ ##       stop("The dimension of the training data does not match the   ## dimension of the output layer of the GNN")
 
     ## Train and possibly save
     type <- x[["type"]]
@@ -107,9 +107,6 @@ fitGNN.gnn_GNN <- function(x, data, batch.size = nrow(data), n.epoch = 100, prio
            "FNN" = {
                if(is.null(prior)) {
                    prior <- rPrior(nrow(data), copula = indepCopula(ncol(data))) # independent N(0,1)
-               } else {
-                   if(!all(dim(data) == dim(prior)))
-                       stop("dim(data) != dim(prior)")
                }
                ## Note:
                ## - x = data to be passed through NN as input
@@ -176,7 +173,7 @@ fitGNNonce.gnn_GNN <- function(x, data, batch.size = nrow(data), n.epoch = 100,
     if(file.given && file.xsts) {
 
         ## Load its objects (thus converting the GNN(s) from 'raw' to 'keras' objects)
-        loadGNN(file)
+        load_gnn(file)
         ## Note: Could check whether returned object contains a GNN and
         ##       whether that's trained (and if not we could even train it),
         ##       but since 'file' most likely was saved by this function, there
@@ -192,7 +189,7 @@ fitGNNonce.gnn_GNN <- function(x, data, batch.size = nrow(data), n.epoch = 100,
         ## If file was provided, save the trained GNN (thus converting
         ## the model component from 'keras' to 'raw')
         if(file.given)
-            saveGNN(x, file = file, name = name)
+            save_gnn(x, file = file, name = name)
 
         ## Return trained GNN(s)
         x

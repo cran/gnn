@@ -27,7 +27,7 @@ importFrom("methods",
            "hasArg", "is")
 
 importFrom("stats",
-           "predict", "rnorm", "qnorm", "plogis", "qlogis", "prcomp",
+           "predict", "rnorm", "qnorm", "plogis", "qlogis", "prcomp", "quantile",
            "time") # generic time()
 
 importFrom("utils",
@@ -51,11 +51,13 @@ importFrom("copula",
 ## Functions
 export("loss", "MMD", "CvM")
 export("range_trafo", "logis_trafo", "PCA_trafo")
-export("saveGNN", "loadGNN")
+export("save_gnn", "load_gnn")
 export("catch", "TensorFlow_available", # use via if(!TensorFlow_available()) q()
        "rm_ext")
 export("rPrior")
-export("as.human", "human.time")
+export("find_box")
+export("human.time")
+export("as.human")
 
 ## Constructors
 export("FNN") # constructor of object of S3 class c("gnn_FNN", "gnn_GNN", "gnn_Model")
@@ -63,27 +65,28 @@ export("FNN") # constructor of object of S3 class c("gnn_FNN", "gnn_GNN", "gnn_M
 
 ## Generics
 export("is.GNN")
+## export("print.as.human")
 export("ffGNN")
 export("fitGNN", "fitGNNonce", "is.trained")
 export("rGNN")
 export("as.keras")
 
 ## Basic methods
-S3method("print",      "gnn_GNN")
-S3method("str",        "gnn_GNN")
-S3method("summary",    "gnn_GNN")
-S3method("dim",        "gnn_GNN")
-S3method("is.GNN",     "gnn_GNN")
-S3method("is.GNN",     "list")
-S3method("ffGNN",      "gnn_GNN")
-S3method("fitGNN",     "gnn_GNN")
-S3method("is.trained", "gnn_GNN")
-S3method("fitGNNonce", "gnn_GNN")
-S3method("is.trained", "list")
-S3method("rGNN",       "gnn_GNN")
-S3method("as.raw",     "gnn_GNN")
-S3method("as.keras",   "gnn_GNN")
-S3method("time",       "gnn_GNN")
-S3method("print",      "gnn_proc_time")
-S3method("plot",       "gnn_GNN")
-S3method("print",      "htest2")
+S3method("print",          "gnn_GNN")
+S3method("str",            "gnn_GNN")
+S3method("summary",        "gnn_GNN")
+S3method("dim",            "gnn_GNN")
+S3method("is.GNN",         "gnn_GNN")
+S3method("is.GNN",         "list")
+S3method("ffGNN",          "gnn_GNN")
+S3method("fitGNN",         "gnn_GNN")
+S3method("is.trained",     "gnn_GNN")
+S3method("fitGNNonce",     "gnn_GNN")
+S3method("is.trained",     "list")
+S3method("rGNN",           "gnn_GNN")
+S3method("as.raw",         "gnn_GNN")
+S3method("as.keras",       "gnn_GNN")
+S3method("time",           "gnn_GNN")
+S3method("print",          "gnn_proc_time")
+S3method("plot",           "gnn_GNN")
+S3method("print",          "htest2")

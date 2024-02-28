@@ -51,7 +51,7 @@
   \item{file}{\code{NULL} or a \code{\link{character}} string
     specifying the file in which the trained GNN(s) is (are)
     saved. If \code{file} is provided and the specified file exists,
-    it is loaded and returned via \code{\link{loadGNN}()}.}
+    it is loaded and returned via \code{\link{load_gnn}()}.}
   \item{name}{\code{\link{character}} string giving the name under
     which the fitted \code{x} is saved (if \code{NULL} the fitted
     \code{x} is saved under the name \code{"x"}).}
@@ -77,7 +77,7 @@
 %% }
 \author{Marius Hofert}
 \seealso{
-  \code{\link{FNN}()}, \code{\link{saveGNN}()},
-  \code{\link{loadGNN}()}.
+  \code{\link{FNN}()}, \code{\link{save_gnn}()},
+  \code{\link{load_gnn}()}.
 }
 \keyword{optimize}

@@ -1,12 +1,16 @@
 ## Short-term
 - Fix: Paper citations from arXiv (once published)
+- gnn:::plot.gnn_GNN (and that of loss function) needs to be able to pass '...'
+  (for cex)
+- why 'max.n.prior' part of fitGNN()?
+- adapt get_weights() to extract weights of a trained NN
 
 ## Medium-term
 - export (very small doc) ./R/model.R classes and methods:
   + implement and export methods rModel, fitModel, save/load, print, etc.
   + incorporate S4 methods of 'copula' as S3 methods in gnn (objects, rCopula, fitCopula)
 
-## Long-term ideas
+## Long-term
 - Would be good to incorporate LSTMs ("gnn_LSTM", "gnn_GNN", "gnn_Model") based on keras
 - KL(): If an analytical (differentiable) form exits for K-L divergence
         between copulas, we could propose an interesting extension.
